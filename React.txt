@@ -1,0 +1,2976 @@
+React
+--------------------------------------------------------
+
+Open source for building UI
+Not a framework
+Only responsible for building UI but not routing and other things
+
+Why react?????
+------------------------------
+maintained by facebook
+huge community support
+In demand
+
+
+Component based architecture
+react is declarative - tell what to build and it will do
+it will efficiently update and render the components
+DOM updates are gracefully handled
+
+Can include react into any of your applications
+React native - for mobile development
+
+
+Setup
+-----------------------
+Node and visual studio code
+
+create react app
+
+npx create-react-app <projectname>  (npx is a npm package runner )
+(or)
+npm install create-react-app -g 
+create-react-app  <projectname> 
+
+
+Folder structure
+-------------------------------
+index.html is the only html file in the applications
+<div id="root"></div> --> To control the UI
+index.js - starting point of app 
+
+src - all source code 
+public - contain all static files
+
+Bable is used to convert ES6 to ES5 to support in all browsers.It converts JSX into JS
+
+
+Components
+---------------------------------------
+Components are created using .js and .jsx files
+
+Types of component
+------------------------------
+1)Stateless functional component  - Js functions which return html
+ex: functiom welcome(props){
+return <h1> hello, {props.name}</h1>;
+}
+2)Stateful class component 
+Class extending component class
+Render method returning HTML is mandatory
+class welcome extends Component {
+  render() { 
+    return <h1> hello, {this.props.name}</h1>;
+	}
+}	
+
+
+Functional components
+---------------------------------------------
+Takes in properties into js function and returns HTML
+
+Properties(props) ------> JS function ----> HTML(JSX)
+
+
+ import React from 'react';
+
+const Greet = () => <h1>Hello React</h1>;
+
+export default Greet  -> Default export -> You can export the same file using a different name in app.js
+
+
+Class components
+-------------------------------------------------------
+import React, {Component} from 'react';
+
+class Welcome extends Component{
+    render(){
+        return <h1>This is class component</h1>
+    }
+}
+
+export default Welcome
+
+
+When to go with functional component
+-----------------------------
+
+When the same result can be achieved by both it is preferable to go with functional component
+Absence of this keyword
+Solution without state
+No logic.i.e it s called stateless, dump or presentational components
+
+
+
+Class components
+-------------------
+Maintain private data - state
+More feature rich
+Complex UI logic
+Provides lifecycle hooks
+Stateful/smart/container
+
+
+Hooks
+---------------------
+Hooks is a new feature that lets use the state and other react features without writing a class.
+
+JSX
+-------------------------
+Javascript XML(JSX) - extension to js language syntax
+Write xml like code for elements and console
+JSX tags have a tag name, attributes and children
+JSX is not a necessity
+it makes code simpler and elegant
+JSX gets transpiled to JS which is understood by browsers
+
+In JSX we need to give class as className since its conflicts with the class keyword
+
+Differences
+
+class -> className
+for -> htmlFor
+onclick -> onClick
+tabindex -> tabIndex 
+
+import React, {Component} from 'react';
+
+class Hello extends Component{
+    render(){
+        // return <div>
+        //     <h1 className="header">This is JSX component</h1>
+        //     </div>
+
+        return React.createElement('div', 
+        {id: 'hello', className: 'dummyClass'},
+        React.createElement('h1',null, 'This is pure JSX'))
+    }
+}
+
+export default Hello
+
+
+Props
+---------------------------------------------
+Props is an object which contains the value that is passed from the parent component
+<Welcome name='Vetri'></Welcome>
+
+
+const Greet = (props) => {
+    console.log(props);
+    return <div> <h1>{props.name} says {props.message}</h1> {props.children}</div> ;
+}
+
+
+class Welcome extends Component{
+    render(){
+        return <h1>Welcome {this.props.name}</h1>
+    }
+}
+Props are immutable
+
+
+State
+-----------------------------------------------------
+
+import React, {Component} from 'react';
+
+class Message extends Component{
+
+    constructor(){
+        super()
+        this.state = {
+            message: 'Welcome Visitor'
+        }
+    }
+
+    changeMessage() {
+        this.setState({
+            message: 'Thanks for subscribing'
+        })
+    }
+
+
+    render(){
+        return (
+        <div>
+        <h1>
+            {this.state.message}
+        </h1>
+        <button onClick= { () => this.changeMessage()}>Subscribe</button>
+        </div>
+        )
+    }
+}
+
+
+
+export default Message
+------------------------------------------------------------------------------------------------------
+
+Instead of providing the state in the constructor we can directly give it as state= {name: ''} .
+The JSX will automatically convert this and we will get the expected result  
+
+-------------------------------------------------------------------------------------------------------
+props vs state
+------------------------------
+props
+Get passed to the component
+function parameters
+Props are immutable
+props        --> functional components
+this.props	 --> class components
+
+
+state
+Is maintained within the component
+variables declared in the function body
+state can be changed
+useState hooks --> functional components
+this.state --> class components
+ 
+
+ SetState
+ -------------------------------------
+ import React, { Component } from 'react'
+
+ class Counter extends Component {
+
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         count: 0
+      }
+    }
+    
+    increment(){
+        this.setState({
+            count: this.state.count + 1
+        })
+    }
+  render() {
+    return (
+    <div>      
+        <div>Count - {this.state.count}</div>
+        <button onClick= { () => this.increment()}>Increment</button>
+      </div>
+    )
+  }
+}
+
+export default Counter
+
+
+State is asynchronous.So always console the value of state in the callback function as a second parameter.
+
+ increment(){
+        this.setState({
+            count: this.state.count + 1
+        },
+        () => {console.log(this.state.count)})
+    }
+
+
+React sets all setState calls as a single call to improve the performance.
+
+
+De-structuring states and props
+----------------------------------------
+De-structuring props in functional component
+-----------------------------------------------------------------
+
+Instead of passing props as argument we can directly provide the properties and access them
+
+const Greet = ({name,message}) => {
+   
+    return <div> <h1>{name} says {message}</h1></div> ;
+}
+
+
+class Welcome extends Component{
+    render(){
+        return <h1>Welcome {this.props.name}</h1>
+    }
+}
+
+
+const Greet = (props) => {
+    const {name,message} = props;
+    return <div> <h1>{name} says {message}</h1></div> ;
+}
+
+
+class Welcome extends Component{
+    render(){
+        return <h1>Welcome {this.props.name}</h1>
+    }
+}
+
+De-structuring props in class component
+----------------------------------------------------------------
+import React, {Component} from 'react';
+
+class Welcome extends Component{
+    render(){
+        const {name} = this.props;
+		const {state1, state2}= this.state;
+        return <h1>Welcome {name}</h1>
+    }
+}
+
+export default Welcome
+
+Snippets
+------------------
+rfce - for class
+rf - for function
+rconst - for constructor
+
+
+
+Event handling
+-----------------------------------------------------------
+events are named in camelCase
+In JSX we pass a function as parameter
+
+import React from 'react'
+
+ function FunctionClick() {
+  function showMessage() {
+      alert('holaa');
+  }
+  return (
+    <div>
+      <button onClick={showMessage}>Click Me</button>
+    </div>
+  )
+}
+
+export default FunctionClick
+
+
+Binding event handlers
+----------------------------------------------------------------
+Approach 3 and 4 are recommended
+
+import React, { Component } from 'react'
+
+class EventBind extends Component {
+
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         message: 'hello'
+      }
+      this.bindEvent = this.bindEvent.bind(this)
+    }
+    
+    bindEvent(){
+        this.setState({
+            message: 'Good Bye'
+        })
+    }
+
+    bindEvent1 = () => {
+        this.setState({
+            message: 'Good Bye'
+        })
+    }
+
+  render() {
+    return (
+      <div>
+        <h3>{this.state.message}</h3>
+        <button onClick= {this.bindEvent.bind(this)}>Approach 1</button>
+        <button onClick= {() => this.bindEvent()}>Approach 2</button>
+        <button onClick= {this.bindEvent}>Approach 3</button>
+        <button onClick={this.bindEvent1}>Approach 4</button>
+      </div>
+    )
+  }
+}
+
+export default EventBind
+
+
+Parent Child communication
+-----------------------------------------------------
+Passing data from parent to child using props
+
+
+Parent component
+
+import React, { Component } from 'react'
+import ChildComponent from './ChildComponent';
+
+class ParentComponent extends Component {
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+        parentName: 'Parent'
+      }
+
+      this.greetHandler = this.greetHandler.bind(this)
+    }
+    
+    greetHandler(childName){
+        alert(`Hello ${this.state.parentName} from ${childName}`)
+    }
+  render() {
+    return (
+      <div>
+        <ChildComponent greetParent={this.greetHandler}/>                  --> Create handler and pass in which function needs to be called
+      </div>
+    )
+  }
+}
+
+export default ParentComponent
+
+Child component
+
+import React from 'react'
+
+function ChildComponent(props) {
+  return (
+    <div>
+      <button onClick = {() => props.greetParent('child')}> Call Parent</button>   --> Passing arguments
+  )
+}
+
+export default ChildComponent
+
+
+Conditional Rendering
+-----------------------------------------------------
+1) if/else
+
+if(this.state.isLoggedIn){
+            return <div>Welcome Vetri</div>
+        } else {
+            return <div>>Welcome Guest  </div>
+        }
+		
+2) element variables
+
+		let message
+        if(this.state.isLoggedIn){
+            message = <div>Welcome Vetri</div>
+        } else {
+            message = <div>Welcome Guest</div>
+        }
+        return message = <div>{message}</div>
+		
+		
+3) ternary conditional operator 
+
+	return this.state.isLoggedIn ? 
+        (<div>Welcome Vetri</div>) : (<div>Welcome Guest</div>)
+
+4) short circuit operator - like ngIf in Angular
+
+return this.state.isLoggedIn && <div>Welcome Vetri</div>
+
+
+List rendering
+----------------------------------------------------------
+import React from 'react'
+
+function Looping() {
+    const names = ['Vetri', 'Mahi', 'Roger']
+  return (
+      <div>
+      {
+        names.map(name => <h2>{name}</h2>)
+      }
+      </div>
+  )
+}
+
+export default Looping
+
+2-------
+
+import React from 'react'
+
+function Looping() {
+    const names = ['Vetri', 'Mahi', 'Roger']
+    const nameList = names.map(name => <h2>{name}</h2>)
+  return (
+    <div>
+      {nameList}
+    </div>
+  )
+}
+
+export default Looping
+
+
+3-------------
+const persons = [
+    {name: 'Vetri', age: 25, skill: 'Angular'},
+    {name: 'Vetri1', age: 26, skill: 'React'},
+    {name: 'Vetr2', age: 27, skill: 'Vue'}
+]
+const personList = persons.map(person => <Person person= {person}/>)
+
+return (
+    <div>
+        {personList}
+    </div>
+    )
+}
+
+
+Person.js
+
+import React from 'react'
+
+function Person({person}) {
+  return (
+    <div>
+      <h4>{person.name} is {person.age} old and is a {person.skill} resource</h4>
+    </div>
+  )
+}
+
+export default Person
+
+
+Key prop
+------------------------------------------------------------
+While working with list we need to make sure that key property is specified and it should be unique
+
+Key property cannot be accessed from the child element
+
+Play a huge role in finding out the changes value and render them in DOM tree
+
+
+Index as key
+-----------------------------------
+use only if 
+1) the items in your list doesn't have a unique id
+2) the list is static list and will  not change
+3)the list will never be recorded or filtered
+
+const personListIndex = persons.map((person,index) => <h2 key={index}>{index},{person.name}</h2>)
+
+
+
+Styling react components
+------------------------------------------------------------------
+1.CSS style sheets
+**************************
+
+import React from 'react'
+import './Styles.css'
+
+function StyleSheet(props) {
+    let className =  props.primary ? 'primary': ''
+  return (
+      
+    <div>
+      <h1 className={className}>StyleSheets</h1>
+    </div>
+  )
+}
+
+export default StyleSheet
+
+
+For multiple classNames we use <h1 className={`${className} font-xl`}>StyleSheets</h1>
+
+2. In-line styling
+***************************************
+import React from 'react'
+
+const heading = {
+    fontSize: '50px',
+    color: 'blue'
+}
+function InlineStyle() {
+  return (
+    <div>
+      <h3 style={heading}>Inline Style</h3>
+    </div>
+  )
+}
+
+export default InlineStyle
+
+
+3. CSS modules
+**********************************************
+It should be of file name .module.css
+
+StyleSheet.module.css
+.success{
+    color: green
+}
+
+import styles from './StyleSheet.module.css'
+
+<h2 className={styles.success}>Module Style Sheet</h2>
+
+Advantage of using css modules is that it is specific to the component and it  can't be used in child components unless it is imported
+
+Css style sheet can be cause style conflicts since the children can use the class without importing
+
+4. CSS in JS libraries
+********************************
+
+
+Basics of forms
+-----------------------------------------------------
+import React, { Component } from 'react'
+
+export default class Form extends Component {
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         userName: '',
+         comments: '',
+         skill: 'react'
+      }
+    }
+    
+    handleNameChange = (event) => {
+        this.setState({
+            userName: event.target.value
+        })
+    }  
+
+    handleCommentsChange = (event) => {
+        this.setState({
+            comments: event.target.value
+        })
+    }
+
+    handleSkillChange = (event) => {
+        this.setState({
+            skill: event.target.value
+        })
+    }
+
+    handleSubmit = event => {
+        alert(`${this.state.userName} ${this.state.comments} ${this.state.skill}`);
+        event.preventDefault();
+    }
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+          <div>
+              <label>User Name</label>
+              <input type="text" value={this.state.userName} onChange={this.handleNameChange}/>
+          </div>
+          <div>
+              <label>Comments</label>
+              <textarea value={this.state.comments} onChange={this.handleCommentsChange}></textarea>
+          </div>
+          <div>
+              <label>Skill</label>
+              <select value={this.state.skill} onChange={this.handleSkillChange}>
+                  <option value="react">React</option>
+                  <option value="angular">Angular</option>
+                  <option value="vue">Vue</option>
+              </select>
+          </div>
+          <button type="submit">Submit</button>
+      </form>
+    )
+  }
+}
+
+LifeCycle methods
+--------------------------------------------------------
+ life cycle available for class components
+ 
+ 1)Mounting - When an instance of a component is being created and inserted into DOM
+ 
+	*constructor
+		- A special function called whenever a new component is created
+		- Initialize state and bind event handlers
+		- Do not cause side effects.No http requests
+		- super(props)
+		  Directly overwrite this.state
+		  
+	*static getDerivedStateFromProps - (Rarely used)
+		- rarely used
+		- when the state of the component depends on changes in props over time
+		- Set state. Here we cannot access this keyword so we need to return new state
+		- Do not cause side effects.No http requests
+	
+	*render
+		- Only required method
+		- Read props and state and return JSX
+		- Do not change state or interact with DOM or Ajax calls 
+		- children components code are also executed
+		
+	*componentDidMount
+		- called only once and invoked immediately after a component and its child components have been rendered to DOM
+		- Perfect place to do cause side effects. Ex: interact with DOM or perform any ajax calls to load data
+		
+	
+ 2)Updating - When a component is being re-rendered as a result of changes to either state or props
+ 
+	*static getDerivedStateFromProps - (Rarely used)
+		- same as above
+		
+	*shouldComponentUpdate (Rarely used)
+		- shouldComponentUpdate(nextProps, nextState)
+		- Dictates if component should re-render or not by returning false
+		- Do not cause side effects.No http requests
+		
+	*render
+		- same as above 
+		
+	*getSnapshotBeforeUpdate  (Rarely used)
+		- getSnapshotBeforeUpdate(prevProps, prevState)
+		- Called right before the changes from the virtual DOM are reflected to actual DOM
+		- Mainly used to capture value from DOM and will return either null or value
+
+	*componentDidUpdate
+		- componentDidUpdate(prevProps, prevState, snapshot)
+		- called after the render is finished in the re-render cycles
+		- Cause side effects 
+	
+ 3)Unmounting -When a component is being removed from the DOM
+ 
+	*componentWillUnmount
+		- Method is invoked immediately before a component is unmounted and destroyed
+		- Canceling any network requests, removing event handlers, canceling subscriptions and also invalidating timers
+		- Do not call setState
+	
+ 4)Error handling -  When there is an error during rendering, in a life-cycle method, or in the constructor of any child component
+ 
+	*static getDerivedStateFromError
+		
+	*componentDidCatch
+	
+	
+Mounting LifeCycle
+---------------------------------------------
+import React, { Component } from 'react'
+import LifeCycleB from './LifeCycleB';
+
+class LifeCycleA extends Component {
+
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         
+      }
+      console.log('LifeCycleA constructor');
+    }
+
+    static getDerivedStateFromProps(props, state){
+        console.log('LifeCycleA static getDerivedStateFromProps')
+        return null;
+        
+    }
+    
+  render() {
+    console.log('LifeCycleA render');
+    return (
+      <div>
+        LifeCycleA
+        <LifeCycleB></LifeCycleB>
+      </div>
+    )
+  }
+
+  componentDidMount(){
+    console.log('LifeCycleA componentDidMount');
+  }
+
+}
+
+export default LifeCycleA
+
+*****************************************************************
+import React, { Component } from 'react'
+
+class LifeCycleB extends Component {
+
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         
+      }
+      console.log('LifeCycleB constructor');
+    }
+
+    static getDerivedStateFromProps(props, state){
+        console.log('LifeCycleB static getDerivedStateFromProps')
+        return null;
+        
+    }
+    
+  render() {
+    console.log('LifeCycleB render');
+    return (
+      <div>
+        LifeCycleB
+      </div>
+    )
+  }
+
+  componentDidMount(){
+    console.log('LifeCycleB componentDidMount');
+  }
+
+}
+
+export default LifeCycleB
+
+Output
+-------------------------------------
+LifeCycleA constructor
+LifeCycleA static getDerivedStateFromProps
+LifeCycleA render
+LifeCycleB constructor
+LifeCycleB static getDerivedStateFromProps
+LifeCycleB render
+LifeCycleB componentDidMount
+LifeCycleA componentDidMount
+
+Updating LifeCycle Methods
+----------------------------------------------
+
+import React, { Component } from 'react'
+import LifeCycleB from './LifeCycleB';
+
+class LifeCycleA extends Component {
+
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         
+      }
+      console.log('LifeCycleA constructor');
+    }
+
+    static getDerivedStateFromProps(props, state){
+        console.log('LifeCycleA static getDerivedStateFromProps')
+        return null;
+        
+    }
+    
+    changeState = () => {
+        this.setState({
+            name: 'Vetrivel'
+        })
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('LifeCycleA shouldComponentUpdate');
+        return true;
+      }
+
+      getSnapshotBeforeUpdate(prevProps, prevState){
+        console.log('LifeCycleA getSnapshotBeforeUpdate');
+        return null; 
+      }
+
+      componentDidUpdate(prevProps, prevState, snapshot){
+        console.log('LifeCycleA componentDidUpdate');
+      }
+
+  render() {
+    console.log('LifeCycleA render');
+    return (
+      <div>
+        LifeCycleA
+        <button onClick={this.changeState}>Change State</button>
+        <LifeCycleB></LifeCycleB>
+      </div>
+    )
+  }
+
+  componentDidMount(){
+    console.log('LifeCycleA componentDidMount');
+  }
+
+}
+
+export default LifeCycleA
+
+*********************************************************************
+
+import React, { Component } from 'react'
+
+class LifeCycleB extends Component {
+
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         name: 'Vetri'
+      }
+      console.log('LifeCycleB constructor');
+    }
+
+    static getDerivedStateFromProps(props, state){
+        console.log('LifeCycleB static getDerivedStateFromProps')
+        return null;
+        
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('LifeCycleB shouldComponentUpdate');
+        return true;
+      }
+
+      getSnapshotBeforeUpdate(prevProps, prevState){
+        console.log('LifeCycleB getSnapshotBeforeUpdate');
+        return null; 
+      }
+
+      componentDidUpdate(prevProps, prevState, snapshot){
+        console.log('LifeCycleB componentDidUpdate');
+      }
+    
+  render() {
+    console.log('LifeCycleB render');
+    return (
+      <div>
+        LifeCycleB
+      </div>
+      
+    )
+  }
+
+  componentDidMount(){
+    console.log('LifeCycleB componentDidMount');
+  }
+
+}
+
+export default LifeCycleB
+
+Output
+------------------------------
+LifeCycleA static getDerivedStateFromProps
+LifeCycleA shouldComponentUpdate
+LifeCycleA render
+LifeCycleB static getDerivedStateFromProps
+LifeCycleB shouldComponentUpdate
+LifeCycleB render
+LifeCycleB getSnapshotBeforeUpdate
+LifeCycleA getSnapshotBeforeUpdate
+LifeCycleB componentDidUpdate
+LifeCycleA componentDidUpdate
+
+
+Fragments
+----------------------------------------------------
+Fragments are used to group children without adding the extra node. We can also denote fragments by using <> </>.
+
+We can also pass in key for the fragments
+
+<React.Fragment key={person.name}>
+      <p>This is a fragment example</p>
+      <h6>Lets group fragments together</h6>
+    </React.Fragment>
+	
+	
+	<table>
+        <tbody>
+            <tr>
+                <TableColumn></TableColumn>
+            </tr>
+        </tbody>
+        
+    </table>
+
+ <React.Fragment>
+      <td>Name</td>
+      <td>Age</td>
+    </React.Fragment>
+	
+Pure Components  - Only for the class component
+--------------------------------------------------------------------
+
+ We can create a component by extending the PureComponent class
+ A pure component implements the shouldComponentUpdate life-cycle method by performing a shallow comparison on the props and state of the component
+ If there is no difference,the component is not re-rendered which helps us in performance boost
+ It is a good idea to ensure that all children components are also pure to avoid unexpected behavior
+ Never mutate the state.Always return a new object that reflects the new state
+ import React, { PureComponent } from 'react'
+
+export class PureComponentDemo extends PureComponent {
+  render() {
+    return (
+      <div>
+        
+      </div>
+    )
+  }
+}
+
+export default PureComponentDemo
+ 
+ Memo Components - Only for the functional component
+ ------------------------------------------------------------------------
+ import React from 'react'
+
+function MemoComponent() {
+  return (
+    <div>
+        
+    </div>
+  )
+}
+
+export default React.memo(MemoComponent)
+
+ 
+ Refs
+ --------------------------------------------------
+ used to access the DOM elements
+ 
+ import React, {
+    Component
+} from 'react'
+
+class RefDemo extends Component {
+    constructor(props) {
+        super(props)
+
+        this.inputRef = React.createRef();
+    }
+
+    componentDidMount(){
+        this.inputRef.current.focus();
+    }
+    render() {
+        return (
+            <div> 
+            <p>Input Ref Example</p>
+            <input type="text" ref={this.inputRef}/>
+            </div>
+        )
+    }
+}
+
+export default RefDemo
+
+
+Other Method
+********************************************************
+CallBack Ref  
+
+this.cbRef = null;
+        this.setCbRef = element => {
+            this.cbRef = element
+        }
+		
+<input type="text" ref={this.setCbRef}/>
+
+if(this.cbRef){
+            this.cbRef.focus();
+        }
+		
+		
+import React, {
+    Component
+} from 'react'
+
+class RefDemo extends Component {
+    constructor(props) {
+        super(props)
+
+        this.inputRef = React.createRef();
+        this.cbRef = null;
+        this.setCbRef = element => {
+            this.cbRef = element
+        }
+    }
+
+    componentDidMount(){
+        if(this.cbRef){
+            this.cbRef.focus();
+        }
+        // this.inputRef.current.focus();
+    }
+
+    clickHandler = () => {
+        alert(`The value is ${this.inputRef.current.value}`)
+    }
+    render() {
+        return (
+            <div> 
+            <p>Input Ref Example</p>
+            <input type="text" ref={this.inputRef}/>
+            <input type="text" ref={this.setCbRef}/>
+            <button onClick={this.clickHandler}>Click to see the value</button>
+            </div>
+        )
+    }
+}
+
+export default RefDemo
+
+
+Ref with class components
+----------------------------------------------------------------
+
+import React, { Component } from 'react'
+
+export default class RefWithClass extends Component {
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         
+      }
+      this.inputRef = React.createRef();
+    }
+
+    focusInput(){
+        this.inputRef.current.focus();
+    }
+    
+  render() {
+    return (
+      <div>
+        <input type='text' ref={this.inputRef}/>
+      </div>
+    )
+  }
+}
+
+Parent
+**************************************************
+
+import React, { Component } from 'react'
+import RefWithClass from './RefWithClass'
+
+export default class RefWithClassParent extends Component {
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         
+      }
+      this.inputRef = React.createRef();
+    }
+    
+    clickHandler = () => {
+        this.inputRef.current.focusInput();
+    }
+
+
+  render() {
+    return (
+      <div>
+        <RefWithClass ref={this.inputRef}/>
+        <button onClick={this.clickHandler}>Focus</button>
+      </div>
+    )
+  }
+}
+
+
+Forwarding Ref
+-------------------------------------------------------
+
+import React, { Component } from 'react'
+import RefForwardChild from './RefForwardChild'
+
+export default class RefForwardParent extends Component {
+constructor(props) {
+  super(props)
+
+  this.state = {
+     
+  }
+  this.inputRef = React.createRef();
+}
+
+clickHandler = () => {
+  this.inputRef.current.focus()  
+}
+  render() {
+    return (
+      <div>
+        <RefForwardChild ref={this.inputRef}/>
+      <button onClick={this.clickHandler}>Forward Ref</button>
+      </div>
+    )
+  }
+}
+
+
+import React from 'react'
+
+const RefForwardChild = React.forwardRef((props,ref) => {
+  return (
+    <div>
+      <input type="text" ref={ref}/>
+    </div>
+  )
+})
+
+export default RefForwardChild
+
+Portals
+-----------------------------------------------------
+
+Used to render children into the DOM node that exist outside the DOM hierarchy of the parent component. Use ReactDOM.createPortal which takes JSX as 
+first parameter and document.getElementById as the second parameter.Don't forget to import  ReactDOM from 'react-dom'.
+
+Mainly used for modal, tool-tip and other elements which might disturb the other UI.It also supports event-bubbling
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+function Portals() {
+  return ReactDOM.createPortal(
+    <div>
+      <h2>Portals demo</h2>
+    </div>,
+    document.getElementById('modal-root')
+  )
+}
+
+export default Portals
+
+
+index.html
+****************************
+
+<div id="modal-root"></div>
+
+
+
+Error Handling 
+--------------------------------------
+
+*static getDerivedStateFromError
+		
+*componentDidCatch
+
+Error Boundaries are react components that catch JS error in their child component tree, log those errors and display a fall-back UI
+
+A class component becomes an error boundary by defining either or both of  getDerivedStateFromError and componentDidCatch life-cycle
+
+The placement of error boundary also matters as it controls the entire app should have the fall-back Ui or just the component casuing the problem
+
+
+Error Boundaries catch methods everywhere except Event handling 
+
+
+Hero
+******************************
+import React from 'react'
+
+function Hero({heroName}) {
+    if(heroName === 'Joker'){
+        throw new Error('Not an hero')
+    }
+  return (
+    <div>
+      {heroName}
+    </div>
+  )
+}
+
+export default Hero
+
+Error Boundary
+************************************
+import React, { Component } from 'react'
+
+class ErrorBoundary extends Component {
+
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         hasError: false
+      }
+    }
+    
+    static getDerivedStateFromError(error){
+        return{
+            hasError: true
+        }
+    }
+
+    componentDidCatch(error,info){
+        console.log(error)
+        console.log(info)
+    }
+  render() {
+    if(this.state.hasError){
+       return <h1>Something went wrong</h1>
+    }
+
+    return this.props.children
+  }
+}
+
+export default ErrorBoundary
+
+
+Higher order components
+-----------------------------------------------------
+
+Need to share the common functionality  between components
+
+A pattern whee a function takes a component as an argument and returns a new component
+
+const NewComponent = higherOrderComponent(originalComponent)
+
+
+import React, { Component } from 'react'
+
+export default class HoverIncrement extends Component {
+
+    constructor(props) {
+        super(props)
+      
+        this.state = {
+           count: 0
+        }
+      }
+      
+      incrementCounter = () => {
+          this.setState(prevState => {
+              return {count: prevState.count + 1}
+          })
+         
+      }  
+
+  render() {
+      const {count} = this.state
+    return (
+      <div>
+        <h3 onMouseOver={this.incrementCounter}>Hovered {count} times</h3>
+      </div>
+    )
+  }
+}
+
+
+
+
+import React, { Component } from 'react'
+
+ class IncrementCounter extends Component {
+     constructor(props) {
+       super(props)
+     
+       this.state = {
+          count: 0
+       }
+     }
+     
+     incrementCounter = () => {
+         this.setState(prevState => {
+             return {count: prevState.count + 1}
+         })
+        
+     }  
+
+  render() {
+    const {count} = this.state;
+    return (
+      <div>
+        <button onClick={this.incrementCounter}>Clicked {count} times</button>
+      </div>
+    )
+  }
+}
+
+export default IncrementCounter
+
+
+
+Two components doing the same purpose.This can be resolved using HOF
+
+Create a component which takes original component and returns a new component 
+Make sure its reusable components are enclosed
+
+import React from 'react'
+
+import React from 'react'
+
+const updatedComponent = WrappedComponent =>{
+    class UpdatedComponent extends React.Component{
+        constructor(props) {
+            super(props)
+          
+            this.state = {
+               count: 0
+            }
+          }
+          
+          incrementCounter = () => {
+              this.setState(prevState => {
+                  return {count: prevState.count + 1}
+              })
+             
+          }  
+        render(){
+            return (
+                <WrappedComponent count={this.state.count}
+                incrementCounter = {this.incrementCounter}/>
+            )
+        }
+    }
+    return UpdatedComponent
+}
+
+export default updatedComponent
+
+
+
+
+import React, { Component } from 'react'
+import updatedComponent from './UpdatedComponent';
+
+ class HoverIncrement extends Component {
+
+  render() {
+      const {count,incrementCounter} = this.props
+    return (
+      <div>
+        <h3 onMouseOver={incrementCounter}>Hovered {count} times</h3>
+      </div>
+    )
+  }
+}
+
+export default updatedComponent(HoverIncrement)
+
+
+
+import React, { Component } from 'react'
+import updatedComponent from './UpdatedComponent';
+
+ class IncrementCounter extends Component {
+
+  render() {
+    const {count,incrementCounter} = this.props
+    return (
+      <div>
+        <button onClick={incrementCounter}>Clicked {count} times</button>
+      </div>
+    )
+  }
+}
+
+export default updatedComponent(IncrementCounter)
+
+*******************************************************************
+While using HOC we need to make sure that while passing in attributes it goes to HOC component first so always use spread operator to send 
+that to child components
+
+<HoverIncrement name="Vetri"></HoverIncrement>
+
+ return (
+                <WrappedComponent count={this.state.count}
+                incrementCounter = {this.incrementCounter}
+                {...this.props}/>
+            )
+			
+			
+We can also pass arguments to HOC. 
+
+export default updatedComponent(HoverIncrement , 5)
+
+const updatedComponent = (WrappedComponent, incrementValue) =>{
+    class UpdatedComponent extends React.Component{
+        
+
+Render Props
+------------------------------------------------------
+Another pattern to share features between components
+
+Technique for sharing code between React components using a prop whose value is a function
+
+
+ {this.props.render(this.state.count, this.incrementCounter)}
+ 
+ 
+ <RenderProps render={(count, incrementCounter) => <ClickIncrement1 count={count} incrementCounter={incrementCounter}></ClickIncrement1>}/>
+ <RenderProps render={(count, incrementCounter) => <HoverIncrement1 count={count} incrementCounter={incrementCounter}></HoverIncrement1>}/>
+ 
+ 
+ const {count, incrementCounter} = this.props;
+   return (
+     <div>
+       <button onClick={incrementCounter}>Clicked {count} times</button>
+     </div>
+   )
+   
+   
+   
+   (or)
+   
+   
+		  <RenderProps>
+          {(count, incrementCounter) => <ClickIncrement1 count={count} incrementCounter={incrementCounter}></ClickIncrement1>}
+          </RenderProps>
+          <RenderProps>
+          {(count, incrementCounter) => <HoverIncrement1 count={count} incrementCounter={incrementCounter}></HoverIncrement1>}
+          </RenderProps>
+	
+	
+			{this.props.children(this.state.count, this.incrementCounter)}
+			
+			
+			Use children and bind the whole thing within the RenderProp component
+			
+
+	Context
+	-----------------------------------------------------------------------
+	
+	Context provides a way to pass data through the component tree without having to pass down manually at every level
+	
+	1.Create the context
+	2. Provide a context value
+	3. Consume the context value
+	
+	Create a userContext
+	
+	import React from 'react'
+
+	const UserContext = React.createContext();
+
+	const UserProvider = UserContext.Provider
+	const UserConsumer = UserContext.Consumer
+
+	export {UserProvider, UserConsumer} 
+
+	
+	
+	
+	
+	<UserProvider value='Vetri'> 
+          <ComponentA/>
+          </UserProvider>
+		  
+		  
+		  
+	Component A returns Component B and B returns C where we need to render the value
+	
+	import React, { Component } from 'react'
+	import {UserConsumer} from './UserContext';
+
+
+	export default class ComponentC extends Component {
+	render() {
+		return (
+        <UserConsumer>
+            {userName => {													--> Pass in function as child
+                    return <h4>Hello {userName}</h4>
+                }
+            }
+        </UserConsumer>
+		)
+	}
+	}
+	
+	
+	To specify default value 
+	const UserContext = React.createContext('Mahi');
+	
+	
+	
+	React and HTTP
+	--------------------------------------------------
+	
+	HTTP library - we use axios or using fetch 
+	
+	npm install axios
+	
+	import React, {
+  Component
+} from 'react'
+import axios from 'axios'
+
+export default class HttpGetExample extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      posts: [],
+      persons: []
+    }
+  }
+
+  componentDidMount() {
+    axios.get('https://jsonplaceholder.typicode.com/posts')
+      .then(response => {
+        console.log(response.data);
+        this.setState({
+          posts: response.data
+        })
+      })
+  }
+
+  render() {
+    return ( 
+      <div>
+        <ul>
+        { this.state.posts.map(post => <li key={post.id}>{post.title}</li>)}
+        </ul>
+      </div>
+    );
+  }
+  
+  
+  
+   const user = {
+        name: 'Vetri'
+      };
+
+      axios.post(`https://jsonplaceholder.typicode.com/users`, { user })
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+
+
+	Create api.js
+	
+	import axios from 'axios';
+
+export default axios.create({
+  baseURL: `http://jsonplaceholder.typicode.com/`
+});
+
+
+import API from './api'
+
+API.get('posts')
+      .then(response => {
+        console.log(response.data);
+        this.setState({
+          posts: response.data
+        })
+      })
+	  
+	  
+	import React, { Component } from 'react'
+import API from './api'
+
+export default class HttpPost extends Component {
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         userName: '',
+         comments: '',
+         skill: 'react'
+      }
+
+    }
+
+    handleChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        })
+    }  
+
+    handleSubmit = async event => {
+        alert(`${this.state.userName} ${this.state.comments} ${this.state.skill}`);
+        event.preventDefault();
+        await API.post('posts', this.state).then(data => console.log(data))
+    }
+  render() {
+    const { userName,comments,skill} = this.state;
+    const dropDownValues = ['React','Angular','Vue']
+    const dropDownList = dropDownValues.map((dropdown,index) => <option key={index} value={dropdown}>{dropdown}</option>)
+    return (
+      <form onSubmit={this.handleSubmit}>
+          <div>
+              <label>User Name</label>
+              <input type="text" name="userName" value={userName} onChange={this.handleChange}/>
+          </div>
+          <div>
+              <label>Comments</label>
+              <textarea value={comments} name="comments" onChange={this.handleChange}></textarea>
+          </div>
+          <div>
+              <label>Skill</label>
+              <select value={skill} name="skill" onChange={this.handleChange}>
+                  {dropDownList}
+
+                  {/* <option value="react">React</option>
+                  <option value="angular">Angular</option>
+                  <option value="vue">Vue</option> */}
+              </select>
+          </div>
+          <button type="submit">Submit</button>
+      </form>
+    )
+  }
+}
+
+
+
+
+
+Default Props
+--------------------------------------------------
+
+const Greet = (props) => <h1>{props.message}</h1>;
+
+Greet.defaultProps = {
+message: 'Loading..'
+}
+
+export default Greet
+
+
+
+Controlled vs Uncontrolled
+-------------------------------------------------------
+
+Advantage of using controlled component is that we can take the value at any point of time using the state property
+
+To set some default value in the input 
+
+
+import React, { Component } from 'react'
+
+export default class ControlledComponent extends Component {
+
+state = {
+    name: ''
+}
+  render() {
+    return (
+      <div>
+        <label>Search here</label>
+        <input type ="text" value={this.state.name} onChange={(e) => this.setState({name: e.target.value}) }/> 
+      </div>
+    )
+  }
+}
+
+
+
+Communication from child to parent
+------------------------------------------------------------------
+
+
+Child
+***********************************
+import React, { Component } from 'react'
+
+export default class ChildToParent extends Component {
+
+state = {
+    name: ''
+}
+
+handleSubmit = (event) => {
+   event.preventDefault(); 
+   this.props.onChildValueSubmit(this.state.name)         
+}
+
+  render() {
+
+    return (
+      <div>
+        <form onSubmit={this.handleSubmit}>         
+        <h1>Child to Parent</h1>
+        <label>Search here</label>
+        <input type ="text" value={this.state.name} onChange={(e) => this.setState({name: e.target.value}) }/> 
+        </form>
+        </div>
+    )
+  }
+}
+
+Parent
+************************************************
+<ChildToParent onChildValueSubmit={this.printChildValue}/>
+
+
+printChildValue = (searchTerm) => {
+    console.log(searchTerm)
+  }
+
+ here onChildValueSubmit -> name of the props
+	  printChildValue -> name of the method which will console the value sent from child
+	  
+	  
+	  
+**************************************************************************
+How to make a deep copy of a JavaScript Array with Objects (and remove it’s reference)
+------------------------------------------------------------------------------------------------
+var duplicateObject = JSON.parse(JSON.stringify( originalObject ));
+
+
+
+
+Redux
+----------------------------------------------------
+
+npm install --save redux react-redux 
+
+create folders inside src 
+
+actions -> index.js
+reducers -> index.js
+
+import { combineReducers } from 'redux'
+
+export default combineReducers({
+    replaceMe: () => 5
+})
+
+
+Open root index.js file 
+
+
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducers from './reducers';
+
+const store = createStore(reducers);
+
+Wrap app component with provider 
+
+ReactDOM.render(
+<Provider store={store}>
+<App />
+</Provider>,
+ document.getElementById('root'));
+
+ 
+ 
+ Actions
+ --------------------------
+ export const signIn = () => {
+    return {
+        type: 'SIGN_IN'
+    }
+}
+
+export const signOut = () => {
+    return {
+        type: 'SIGN_OUT'
+    }
+}
+
+
+GAuth Component
+
+import { connect } from 'react-redux';
+import { signIn, signOut} from '../actions' 
+
+export default connect(
+  null, 									-----> Here null is the state or props 
+  { signIn, signOut}
+  )(GoogleAuth)
+
+  
+ onAuthChange = (isSignedIn) => {
+    if(isSignedIn) {
+      this.props.signIn();
+    } else {
+      this.props.signOut();
+    }
+  }
+  
+  
+ Create a reducer authReducer inside reducer folder 
+ 
+ 
+ const INITIAL_STATE = {
+    isSignedIn: null
+};
+
+export default (state = INITIAL_STATE, action) => {
+    switch(action.type){
+        case 'SIGN_IN':
+            return {...state, isSignedIn: true};
+        case 'SIGN_OUT':
+            return {...state, isSignedIn: false};
+        default:
+            return state;    
+    }
+};
+
+
+Then import that in reducer index.js and register in the combined reducer 
+
+import { combineReducers } from 'redux'
+import authReducer from './authReducers'
+
+export default combineReducers({
+    auth: authReducer
+})
+
+
+Now in Gauth file 
+
+Remove all setState and state reference 
+
+const mapStateToProps = (state) => {
+  return { isSignedIn: state.auth.isSignedIn}
+}
+
+this.onAuthChange(this.auth.isSignedIn.get());
+
+const mapStateToProps = (state) => {
+  return { isSignedIn: state.auth.isSignedIn}
+}
+
+
+export default connect(
+  mapStateToProps, 
+  { signIn, signOut})(GoogleAuth)
+  
+  
+***********************************************
+import React, { Component } from 'react'
+import '../App.css';
+import { connect } from 'react-redux';
+import { signIn, signOut} from '../actions' 
+
+class GoogleAuth extends Component {
+  //This one was before introducing redux
+  //state= {isSignedIn : null}
+  componentDidMount(){
+      window.gapi.load('client:auth2', () => {
+          window.gapi.client.init({
+              clientId: '307474926808-6gs9k9jmf01dn845fvgt9v66h3m33t5k.apps.googleusercontent.com',
+              scope: 'email'
+          }).then(() => {
+              this.auth = window.gapi.auth2.getAuthInstance();
+              //This one was before introducing redux
+              //this.setState({isSignedIn: this.auth.isSignedIn.get()});
+              this.onAuthChange(this.auth.isSignedIn.get());
+              this.auth.isSignedIn.listen(this.onAuthChange)
+          })
+      })
+  }
+  
+  //This one was before introducing redux
+  // onAuthChange = () => {
+  //   this.setState({isSignedIn: this.auth.isSignedIn.get()});
+  // }
+
+  onAuthChange = (isSignedIn) => {
+    if(isSignedIn) {
+      this.props.signIn();
+    } else {
+      this.props.signOut();
+    }
+  }
+
+  onSignIn = () => {
+    this.auth.signIn();
+  }
+
+  onSignOut = () => {
+    this.auth.signOut();
+    }
+
+  checkStatus()  {
+      //This one was before introducing redux
+      //Change props to state
+      if(this.props.isSignedIn === null){
+          return null;
+      } else if(this.props.isSignedIn){
+          return (
+            <button onClick={this.onSignOut} className="ui red google button width">
+             <i className="google icon"/> SignOut 
+             </button>
+          );
+      } else {
+        return (
+            <button onClick={this.onSignIn} className="ui red google button width">
+             <i className="google icon width"/> Sign In  
+             </button>
+          );
+      }
+  }
+  render() {
+    return (
+      <div>
+        {this.checkStatus()}
+      </div>
+    )
+  }
+}
+
+const mapStateToProps = (state) => {
+  return { isSignedIn: state.auth.isSignedIn}
+}
+
+
+export default connect(
+  mapStateToProps, 
+  { signIn, signOut})(GoogleAuth)
+ **************************************************************************************************
+ 
+ Have an action type created in actions folder 
+ 
+ types.js
+ 
+ export const SIGN_IN = 'SIGN_IN';
+export const SIGN_OUT = 'SIGN_OUT';
+
+action - index.js 
+-----------------------------------------------------
+import {SIGN_IN, SIGN_OUT} from './types'
+
+export const signIn = () => {
+    return {
+        type: SIGN_IN
+    }
+}
+
+export const signOut = () => {
+    return {
+        type: SIGN_OUT
+    }
+}
+
+
+reducer - authReducer.js
+-----------------------------------------------
+
+import {SIGN_IN, SIGN_OUT} from '../actions/types'
+
+
+const INITIAL_STATE = {
+    isSignedIn: null
+};
+
+export default (state = INITIAL_STATE, action) => {
+    switch(action.type){
+        case SIGN_IN:
+            return {...state, isSignedIn: true};
+        case SIGN_OUT:
+            return {...state, isSignedIn: false};
+        default:
+            return state;    
+    }
+};
+
+Injecting payload prop 
+----------------------------
+
+onAuthChange = (isSignedIn) => {
+    if(isSignedIn) {
+      this.props.signIn(this.auth.currentUser.get().getId());
+    } else {
+      this.props.signOut();
+    }
+  }
+  
+  
+  import {SIGN_IN, SIGN_OUT} from './types'
+
+export const signIn = (userId) => {
+    return {
+        type: SIGN_IN,
+        payload: userId
+    }
+}
+
+export const signOut = () => {
+    return {
+        type: SIGN_OUT
+    }
+}
+
+
+
+
+import {SIGN_IN, SIGN_OUT} from '../actions/types'
+
+
+const INITIAL_STATE = {
+    isSignedIn: null,
+    userId: null
+};
+
+export default (state = INITIAL_STATE, action) => {
+    switch(action.type){
+        case SIGN_IN:
+            return {...state, isSignedIn: true, userId: action.payload};
+        case SIGN_OUT:
+            return {...state, isSignedIn: false, userId: null};
+        default:
+            return state;    
+    }
+};
+
+-----------------------------------------------------------------------------------------
+
+Redux Dev tools
+-------------------------------------------
+index.js
+
+https://github.com/zalmoxisus/redux-devtools-extension
+
+import { createStore, applyMiddleware, compose } from 'redux';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(
+    reducers,
+    composeEnhancers(applyMiddleware())
+);
+
+
+Debugging with redux 
+
+
+?debug_session=<some string >
+We can have separate sessions for both and track the state changes
+----------------------------------------------------------------------------------------------------
+
+
+Routing
+---------------------------------------
+
+npm install --save react-router-dom
+
+
+import { BrowserRouter, Route  } from 'react-router-dom';
+
+
+<BrowserRouter>
+	<div>
+		  <Link to="/Form" className='Form'>{'Check out our About Page!'}</Link>
+          <Route exact path="/" component={HttpPost}/>
+          <Route path="/Form" component={Looping}/>
+    </div>
+</BrowserRouter>
+
+
+Routes can be achieved by
+1) BrowserRouter
+2) HashRouter
+3) MemoryRouter
+
+
+<Route path="/routeNavigate" component={RouteNavigate}/>
+<Route path="/routeNavigationTest" component={RouteNavigationTest}/>
+		  
+
+import React, { Component } from 'react'
+import {withRouter} from "react-router-dom";
+
+class RouteNavigationTest extends Component {
+
+  handleClick = () => {
+    this.props.history.push('/routeNavigate');
+  }  
+  render() {
+    return (
+      <div>
+        <h3>This is a test Component</h3>
+        <button onClick={this.handleClick}>Click to Navigate</button>
+      </div>
+    )
+  }
+}
+
+export default withRouter(RouteNavigationTest)
+
+
+OAuth
+-------------------------------		  
+
+https://console.developers.google.com 
+
+Create new project 
+
+Go to OAuth credentials --> Then to OAuth consent screen -> Enter Project name and give save 
+
+Go to credentials tab and click on create credentials button and select OAuth client ID
+
+Select web application and in Authorized JS options give the application URL
+http://localhost:3000
+
+OAuth client ID and secret will be generated
+
+
+import React, { Component } from 'react'
+import '../App.css';
+
+export default class GoogleAuth extends Component {
+  state= {isSignedIn : null}
+  componentDidMount(){
+      window.gapi.load('client:auth2', () => {
+          window.gapi.client.init({
+              clientId: '307474926808-6gs9k9jmf01dn845fvgt9v66h3m33t5k.apps.googleusercontent.com',
+              scope: 'email'
+          }).then(() => {
+              this.auth = window.gapi.auth2.getAuthInstance();
+              this.setState({isSignedIn: this.auth.isSignedIn.get()});
+              this.auth.isSignedIn.listen(this.onAuthChange)
+          })
+      })
+  }
+  
+  onAuthChange = () => {
+    this.setState({isSignedIn: this.auth.isSignedIn.get()});
+  }
+
+  onSignIn = () => {
+    this.auth.signIn();
+  }
+
+  onSignOut = () => {
+    this.auth.signOut();
+    }
+
+  checkStatus()  {
+      if(this.state.isSignedIn === null){
+          return null;
+      } else if(this.state.isSignedIn){
+          return (
+            <button onClick={this.onSignOut} className="ui red google button width">
+             <i className="google icon"/> SignOut 
+             </button>
+          );
+      } else {
+        return (
+            <button onClick={this.onSignIn} className="ui red google button width">
+             <i className="google icon width"/> Sign In  
+             </button>
+          );
+      }
+  }
+  render() {
+    return (
+      <div>
+        {this.checkStatus()}
+      </div>
+    )
+  }
+}
+
+Here get is used to get the status of the user and listen will keep watching for the changes.
+
+
+
+Authorised JavaScript origins 
+For use with requests from a browser. This is the origin URI of the client application. It cannot contain a wildcard (https://*.example.com) or a path (https://example.com/subdir). If you're using a non-standard port, you must include it in the origin URI. 
+
+http://localhost 
+http://localhost:3000 
+
+
+Authorised redirect URIs 
+For use with requests from a web server. This is the path in your application that users are redirected to after they have authenticated with Google. The path will be appended with the authorisation code for access. Must have a protocol. Cannot contain URL fragments or relative paths. Cannot be a public IP address. 
+
+http://localhost:3000/gAuth 
+http://localhost:3000 
+
+
+
+Redux Forms
+------------------------------------------------------------
+
+npm install redux-form@8.1.0
+
+In reducr index.js
+----------------------------------------------------------------------
+
+import { reducer as formReducer} from 'redux-form'
+
+
+export default combineReducers({
+    auth: authReducer,
+    form: formReducer
+})
+
+-------------------------------------------------------------------
+
+
+import { Field, reduxForm} from 'redux-form';
+import React, { Component } from 'react';
+
+
+class ReduxFormExample extends Component {
+
+  renderInput = (formProps) => {
+    return <input {...formProps.input}/>
+  }
+
+  render() {
+    return (
+      <form>
+       <Field name="title" component={this.renderInput}/>
+       <Field name="description" component={this.renderInput}/>
+      </form>
+    ); 
+  }
+}
+
+export default reduxForm({
+  form: 'sampleForm'
+})(ReduxFormExample)
+
+
+
+import { Field, reduxForm} from 'redux-form';
+import React, { Component } from 'react';
+import '../App.css';
+
+
+class ReduxFormExample extends Component {
+
+  renderInput = ({input, label}) => {
+    return (
+        <div className="label-color">
+        <label> {label}</label> 
+        <input {...input}/>
+        </div>
+    )
+  }
+
+  render() {
+    return (
+      <form className="ui form">
+       <Field name="title" component={this.renderInput} label="Enter title"/>
+       <Field name="description" component={this.renderInput} label="Enter description"/>
+      </form>
+    ); 
+  }
+}
+
+export default reduxForm({
+  form: 'sampleForm'
+})(ReduxFormExample)
+
+
+
+Validation 
+----------------------------------
+In meta we can find all the error messages.The error message gets associated with the name attribute 
+
+const validate = formValues => {
+  const errors= {};
+
+  if(!formValues.title){
+    errors.title = "You must enter a title"
+  }
+
+  if(!formValues.description){
+    errors.description = "You must enter a description"
+  }
+
+  return errors;
+}
+
+export default reduxForm({
+  form: 'sampleForm',
+  validate
+})(ReduxFormExample)
+
+
+renderInput = ({input, label, meta}) => {
+    return (
+        <div className="label-color">
+        <label> {label}</label> 
+        <input {...input}/>
+        <div>{meta.error}</div>
+        </div>
+    )
+  }
+  
+  
+  ----------------------------------------------------------------------
+  import { Field, reduxForm} from 'redux-form';
+import React, { Component } from 'react';
+import '../App.css';
+
+
+class ReduxFormExample extends Component {
+
+  renderInput = ({input, label, meta}) => {
+    return (
+        <div className="label-color">
+        <label> {label}</label> 
+        <input {...input}/>
+        <div>{meta.error}</div>
+        </div>
+    )
+  }
+
+  onSubmit = (formValues) => {
+    console.log(formValues)
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form">
+       <Field name="title" component={this.renderInput} label="Enter title"/>
+       <Field name="description" component={this.renderInput} label="Enter description"/>
+       <button className="ui button primary">Submit</button>
+      </form>
+    ); 
+  }
+}
+
+const validate = formValues => {
+  const errors= {};
+
+  if(!formValues.title){
+    errors.title = "You must enter a title"
+  }
+
+  if(!formValues.description){
+    errors.description = "You must enter a description"
+  }
+
+  return errors;
+}
+
+export default reduxForm({
+  form: 'sampleForm',
+  validate
+})(ReduxFormExample)
+
+----------------------------------------------------------------------------------
+ 
+ import { Field, reduxForm} from 'redux-form';
+import React, { Component } from 'react';
+import '../App.css';
+
+
+class ReduxFormExample extends Component {
+
+  renderError = ({touched, error}) => {
+    if(touched && error){
+      return (
+        <div className="ui error message">{error}</div>
+      )
+    }
+  }
+  renderInput = ({input, label, meta}) => {
+    return (
+        <div className="label-color">
+        <label> {label}</label> 
+        <input {...input}/>
+        {this.renderError(meta)}
+        </div>
+    )
+  }
+
+  onSubmit = (formValues) => {
+    console.log(formValues)
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
+       <Field name="title" component={this.renderInput} label="Enter title"/>
+       <Field name="description" component={this.renderInput} label="Enter description"/>
+       <button className="ui button primary">Submit</button>
+      </form>
+    ); 
+  }
+}
+
+const validate = formValues => {
+  const errors= {};
+
+  if(!formValues.title){
+    errors.title = "You must enter a title"
+  }
+
+  if(!formValues.description){
+    errors.description = "You must enter a description"
+  }
+
+  return errors;
+}
+
+export default reduxForm({
+  form: 'sampleForm',
+  validate
+})(ReduxFormExample)
+
+
+Note: Error message will appear only if we add error class to the form.
+
+
+-------------------------------------------------------------------------------------------------
+
+Hooks Concept 
+
+-------------------------------------------------------------------------------------------------
+Hooks are introduced to add state functionality inside functional component
+
+Use hooks only inside react functional component
+Use hooks only at top level
+
+useState
+--------------------
+It returns an array with 2 elements
+the first element is an initial value and the second is a state setter function
+when working with obj or array, always spread your state variable and then call the setter func as 
+useState doesnt do merge automatically
+
+useState Hooks
+----------------
+
+import React, {useState} from 'react'
+
+function HookCounter() {
+
+    const [count, setCount] = useState(0)
+
+    return (
+        <div>
+            <button onClick = {() => setCount(count + 1)}>Count {count}</button>
+        </div>
+    )
+}
+
+export default HookCounter
+
+Hooks with previous state
+----------------------------
+
+Just like how you use previous state and increment it in class component
+
+import React, {useState} from 'react'
+
+function HookCounterTwo() {
+
+    const initialCount = 0
+    const [count, setCount] = useState(initialCount)
+
+    const incrementFive = () => {
+        for(let i=0; i<5 ; i++) {
+        setCount(prevCount => prevCount + 1)
+        }
+    }
+
+    return (
+        <div>
+            <h3>Count : {count}</h3>
+            <button onClick = {() => setCount(initialCount) }>Reset</button>
+            <button onClick = {() => setCount(prevCount => prevCount + 1) }>Increment</button>
+            <button onClick = {() => setCount(prevCount => prevCount - 1) }>Decrement</button>
+            <button onClick = {incrementFive }>Increment 5 times</button>
+        </div>
+    )
+}
+
+export default HookCounterTwo
+
+Object as Hooks variable
+-------------------------
+
+In hooks as object, it will not automatically merge and update obj. you have to merge and update the required
+...name (spread operator is used) to get all the object from name and change oly the required field
+
+function HooksCounterThree() {
+    const [name, setname] = useState({firstName: "", lastName: ""})
+    return (
+        <form>
+            <input type = "text"
+            value = {name.firstName}
+            onChange = {e => setname({ ...name , firstName : e.target.value})}
+            />
+            <input type = "text"
+            value = {name.lastName}
+            onChange = {e => setname({ ...name ,lastName : e.target.value})}
+            />
+            <h3>firstname: {name.firstName} lastname: {name.lastName}</h3>
+        </form>
+    )
+      
+}
+
+Hooks as Array
+---------------
+function HookCounterFour() {
+    const [items, setitems] = useState([])
+
+   const additems = () => {
+        setitems([...items , {
+            id : items.length,
+            value : Math.floor(Math.random()*10 +1)}])
+        }
+
+    return (
+        <div>
+            <button onClick = {additems}>Add number to list</button>
+           <ul>Items in list{items.map(item => (<li key = {item.id}>{item.value}</li>))}
+           </ul> 
+        </div>
+    )
+}
+
+useEffect 
+------------
+lets you perform side effects in functional components. It's a replacement for (ComponentDidUpdate & CompnentDidMount)
+
+useEffect after render
+-----------------------
+useEffect occurs every time there is a change in render function
+
+useEffect in Condition
+-----------------------
+since useEffect occurs for every change if we dont need it to render for oly specific changes that is made 
+then add it as a [input variable] after useEffect functionality
+
+function HooksEffectOne() {
+
+   const [count, setcount] = useState(0)
+   const [name, setName] = useState("")
+
+   useEffect(() => {
+      console.log("updating count")
+       document.title = `You clicked ${count} times`
+   },[count])
+    return (
+        <div>
+            <input type = "text" value = {name} onChange = {e=> setName(e.target.value)}/>
+            <button onClick = {()=> setcount(count + 1)}>Click {count} times</button>
+        </div>
+    )
+}
+
+useEffect to use oly once
+---------------------------
+when we dont need to re-render something then pass an empty array as input in useEffect method,
+react will understand that useEffect is not dependent on anything so it will not re-render
+
+useEffect(() => {
+      console.log("updating count")
+       document.title = `You clicked ${count} times`
+   },[])
+
+useEffect cleanup
+-------------------
+
+if you want to remove the timer/ eventListener then add a return func in useEffect method and remove the timer/eventListener
+
+useEffect(() => {
+        console.log("useEffect is called")
+        window.addEventListener('mousemove' , logMousePosition)
+        
+        return() => {
+            console.log("unmounting")
+            window.removeEventListener('mousemove' , logMousePosition)
+        }
+    }, [])
+
+Fetching data in useEffect
+---------------------------
+You can fetch data using axios and the get method. Use useEffect to call the axios and get the response and render the data with the help of key 
+You can get n number of posts as well as one specific post as per the input given by user
+
+function FetchingHooksOne() {
+
+    const [post, setPost] = useState({})
+    const [id, setId] = useState(1)
+
+    const[idClick, setIdClick] = useState(1)
+
+    const fetchClick = () =>{
+        setIdClick(id)
+    }
+
+    useEffect(() => {
+        axios
+            .get(`https://jsonplaceholder.typicode.com/posts/${idClick}`)
+            .then(res =>{
+                console.log(res)
+                setPost(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }, [idClick])
+    return (
+        <div>
+            <input type="text" value = {id} onChange = {e => setId(e.target.value)}/>
+            <button onClick = {fetchClick}>Fetch data</button>
+            <div>{post.title}</div>
+            {/* <ul>{posts.map(post => (
+                <li key={post.id}>{post.title}</li>
+            ))}</ul> */}
+        </div>
+    )
+}
+
+useContext in Hooks
+--------------------
+context provides a way to pass down the props to required tree level rather than passing it to every level
+
+Steps to use in Hooks
+1. Create Context in App.js (export const UserContext = React.createContext())
+2. Create Provider and wrap the component inside the provider 
+(<AgeContext.Provider value = {25}>
+          <ContextHooksOne/>
+        </AgeContext.Provider> )
+3. Import Context and useContext in the component
+4.
+function ContextHooksTwo() {
+
+    const user = useContext(UserContext)
+    const age = useContext(AgeContext)
+
+    return (
+        <div>
+            {user} - {age}
+        </div>
+    )
+}
+      
+useReducer in Hooks
+---------------------------
+
+useReducer is used for state management
+its an alternative to state management
+its a primitive
+
+const initialState = 0
+    const reducer = (state , action)=>{
+        switch(action){
+            case 'increment':
+                return state + 1
+            case 'decrement':
+                return state - 1  
+            case 'reset':
+                return initialState 
+            default:
+                return state         
+        }
+        
+    }
+    function ReducerHooksOne() {
+    const [count, method] = useReducer(reducer , initialState)
+    return (
+        <div>
+            <div>Count - {count}</div>
+            <button onClick ={() => method('increment')}>Increment</button>
+            <button onClick ={() => method('decrement')}>Decrement</button>
+            <button onClick ={() => method('reset')}>Reset</button>
+        </div>
+    )
+}
+
+useReducer with Object
+-----------------------
+You can use action and state as object 
+
+import React , {useReducer} from 'react'
+
+    const initialState = {
+        firstCounter : 0,
+        secondCounter : 10
+    }
+    const reducer = (state , action)=>{
+        switch(action.type){
+            case 'increment':
+                return {...state, firstCounter : state.firstCounter + action.value}
+            case 'decrement':
+                return {...state, firstCounter : state.firstCounter - action.value}  
+            case 'increment2':
+                return {...state, secondCounter : state.secondCounter + action.value}
+            case 'decrement2':
+                return {...state, secondCounter : state.secondCounter - action.value}
+            case 'reset':
+                return initialState 
+            default:
+                return state         
+        }
+        
+    }
+    function ReducerHooksTwo() {
+    const [count, method] = useReducer(reducer , initialState)
+    return (
+        <div>
+            <div>Count - {count.firstCounter}
+            second Counter - {count.secondCounter}</div>
+            <button onClick ={() => method({type : 'increment' , value : 1})}>Increment</button>
+            <button onClick ={() => method({type :'decrement' , value : 1})}>Decrement</button>
+            <button onClick ={() => method({type : 'increment' , value : 5})}>Increment 5</button>
+            <button onClick ={() => method({type :'decrement' , value : 5})}>Decrement 5</button>
+            <button onClick ={() => method({type :'reset'})}>Reset</button>
+            <div>
+                <button onClick ={() => method({type : 'increment2' , value : 1})}>Increment Counter 2</button>
+                <button onClick ={() => method({type :'decrement2' , value : 1})}>Decrement Conter 2</button>
+            </div>
+        </div>
+    )
+}
+
+export default ReducerHooksTwo
+
+Multiple useReducer
+---------------------
+You can use multiple useReducer and use the same function logic instead of creating again
+import React , {useReducer} from 'react'
+
+    const initialState = 0
+    const reducer = (state , action)=>{
+        switch(action){
+            case 'increment':
+                return state + 1
+            case 'decrement':
+                return state - 1  
+            case 'reset':
+                return initialState 
+            default:
+                return state         
+        }
+        
+    }
+    function ReducerHooksThree() {
+    const [count, method] = useReducer(reducer , initialState)
+    const [countTwo, methodTwo] = useReducer(reducer , initialState)
+    return (
+        <div>
+            <div>Count - {count}</div>
+            <button onClick ={() => method('increment')}>Increment</button>
+            <button onClick ={() => method('decrement')}>Decrement</button>
+            <button onClick ={() => method('reset')}>Reset</button>
+            <div>
+            <div>Count Two - {countTwo}</div>
+            <button onClick ={() => methodTwo('increment')}>Increment</button>
+            <button onClick ={() => methodTwo('decrement')}>Decrement</button>
+            <button onClick ={() => methodTwo('reset')}>Reset</button>
+            </div>
+        </div>
+    )
+}
+
+export default ReducerHooksThree
+
+Fetching with useReducer
+---------------------------
+const initialState = {
+    loading : true,
+    post : {}, 
+    error: ''
+}
+
+const reducer = (state, action) => {
+    switch(action.type) {
+     case 'SUCCESS':
+         return {
+         loading: false,
+         error: '',
+         post: action.payload
+         }   
+     case 'FAILURE':
+         return {
+         loading: false,
+         error: 'Fetching error',
+         post: {}
+         }
+     default :
+        return state    
+        }
+}
+
+function FetchingDataTwo() {
+    const [state, dispatch] = useReducer(reducer, initialState)
+
+    useEffect( ()=> {
+        axios
+        .get('https://jsonplaceholder.typicode.com/posts/10')
+        .then(response => {
+            dispatch({type: 'SUCCESS', payload:response.data})
+        })
+        .catch(() => {
+            dispatch({type: 'FAILURE'})
+        })
+    })
+    return (
+        <div>
+            {state.loading ? 'loading' : state.post.title}
+            {state.error ? state.error : null}
+        </div>
+    )
+}
+
+useState vs useReducer
+--------------------------
+Type of state
+---------------
+useState-Number,string,boolean
+useReducer-Object or Array
+
+Number of state transitions
+----------------------------
+useState- 1 or 2
+useReducer-Many
+
+related state transitions
+--------------------------
+useState- no
+useReducer- yes
+
+Buisness logic
+---------------
+useState- no buisness logic
+useReducer- complex buisness logic
+
+Local vs global
+----------------
+useState- local
+useReducer- global
+---------------------------------------------------
+useCallback
+-----------------
+it oly changes if one of the dependencies has changed
+it is useful when passing callbacks to child that rely on reference equality to prevent unneccessary RenderProps
+
+
+import useCallback
+then call useCallback
+it accepts callback func as first parameter and then array of dependencies as second parameter
+example:
+const increment = useCallback (() => {
+setAge(age +1 )}, [age])
+
+memo uses the cached value to render it changes oly when there is a change in the value
+const increment = useMemo (() => {
+  let i = 0
+  while(i < 200000000) i++
+setAge(age +1 )}, [age])
+
+const incrementsalary = () => {
+setAge(age +1 )}
+
+in the above example the salary button increments quick in UI with the use of useMemo but the age takes time because it has to 
+calc more.
+the useMemo makes the age to use cachedvalue when salary increment button is clicked. 
+
+custom hooks
+-------------
+is a JavaScript func that starts with 'use'
+it can call other hooks if needed
+
+why?
+an alternative to HOC and render props
+
+
+
+
+
+
+
+
+ 

@@ -1,0 +1,19 @@
+passing child to parent
+-------------------------
+1.create parent comp
+2.create class comp
+3.create const
+4.create state (name)
+5.create func (greetParent- alert(use template literal))
+6.create child comp
+7.create func comp
+8.create button
+9.Add child comp in parent comp (inside <div>)
+10.create a func as greetHandler and call the greetParent using this inside div)
+11.create binding inside constructor for greetParent (this.greetParent = this.greetParent.bind(this) )
+12.create onClick in child button and call {props.greetHandler} and pass props in func comp
+13.add parent comp in app.js
+
+to pass an argumrnt value
+14.make the onClick in child comp as an arrow func ()=> props.greetHandler('How r u')
+15.create an argument in alert func and use same template literal to display the passed argument 
