@@ -1,0 +1,107 @@
+Redux
+----------
+It's a predictable state container of JavaScript apps
+
+Redux can be used with React, Angular, Vue and Vanilla JS
+Redux is a library for JS applications
+redux stores the state of ur applications
+
+React - Redux is a library to bind react and redux together in an application
+to install - node install Redux
+it will add dependencies in the package.json file
+
+3 concepts in redux
+--------------------
+Store that holds the state of the application
+Action describes changes in the state of the application
+Reducer which actually carries out state transition depending on the Action
+
+3 principles
+-------------
+1.all of the state needs to be stored in a single object
+2.to update state you need to let redux know about that with an Action
+(you cannot update state directly. U use"type")
+3.you need to write pure reducers(pure func) which will take the previous state and action then result in newstate
+
+JavaScript app ->(dispatch) Action -> Reducer(does the action and sends the value to) Redux Store,
+which in turn sends the value to JS app because we have subscribed the JS app and redux store
+
+Actions
+--------
+action is an object with type property
+action creator is a func that returns an action
+
+const BUY_CAKE = 'BUY_CAKE'
+function buycake()
+{
+    return{
+    type: BUY_CAKE
+    }
+}
+
+Reducer
+--------
+it specifies how application state changes with response to Actions
+(previousState , action) => newState
+
+const initialState{
+    noOfCakes : 10
+}
+
+const reducer = (state = initialState, action) =>{
+    switch(action.type){
+        case 'BUY_CAKE' :
+        return {
+            ...state, 
+            numOfCakes: state.numOfCakes - 1
+        }
+        default:
+        return state
+    }
+}
+
+
+Store
+------
+One store for entire application
+responsiblities -
+holds application state
+access to state - getState()
+state to be updated - dispatch(action)
+register listeners - subscribe(listener)
+handles unregistering of listeners
+
+import redux from 'redux'
+const createStore = redux.createStore
+
+const BUY_CAKE = 'BUY_CAKE'
+
+function buycake() {
+    return{
+        type:  BUY_CAKE
+    }
+}
+
+const initialState = {
+    numOfCakes: 10
+}
+const reducer = (state = initialState, action) =>{
+    switch(action.type){
+        case 'BUY_CAKE' :
+        return {
+            ...state, 
+            numOfCakes: state.numOfCakes - 1
+        }
+        default:
+        return state
+    }
+}
+
+const store = createStore(reducer)
+console.log('Initial state', store.getState())
+const unsubscribe = store.subscribe(() => console.log('Updated state', store.getState())
+store.dispatch(buycake())
+store.dispatch(buycake())
+store.dispatch(buycake())
+unsubscribe()
+
